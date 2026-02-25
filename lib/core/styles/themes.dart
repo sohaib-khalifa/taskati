@@ -7,7 +7,8 @@ import 'package:taskati/core/styles/text_styles.dart';
 class AppThemes {
   static ThemeData get light => ThemeData(
     fontFamily: AppFonts.lexendDeca,
-    scaffoldBackgroundColor: Colors.white,
+
+    scaffoldBackgroundColor: Colors.transparent,
     textButtonTheme: TextButtonThemeData(
       style: TextButton.styleFrom(
         padding: const EdgeInsets.all(0),
