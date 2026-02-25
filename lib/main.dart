@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:taskati/core/styles/themes.dart';
+import 'package:taskati/features/splash/splash_screen.dart';
 
 void main() {
   runApp(const Taskati());
@@ -14,7 +15,7 @@ class Taskati extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       theme: AppThemes.light,
 
-      home: const Scaffold(body: Center(child: Text('Welcome to Taskati'))),
+      home: const SplashScreen(),
     );
   }
 }
