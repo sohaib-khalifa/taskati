@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:taskati/core/constants/app_images.dart';
+import 'package:taskati/core/styles/colors.dart';
 import 'package:taskati/core/styles/themes.dart';
 import 'package:taskati/features/splash/splash_screen.dart';
 
@@ -14,7 +16,24 @@ class Taskati extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       theme: AppThemes.light,
-
+      builder: (context, child) {
+        return Stack(
+          children: [
+            Container(
+              color: AppColors.backgroundColor,
+              width: double.infinity,
+              height: double.infinity,
+            ),
+            Image.asset(
+              AppImages.bg,
+              width: double.infinity,
+              height: double.infinity,
+              fit: BoxFit.cover,
+            ),
+            child ?? const SizedBox.shrink(),
+          ],
+        );
+      },
       home: const SplashScreen(),
     );
   }
