@@ -1,5 +1,4 @@
 import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:image_picker/image_picker.dart';
@@ -12,6 +11,7 @@ import 'package:taskati/core/widgets/custom_text_form_field.dart';
 import 'package:taskati/core/widgets/main_button.dart';
 import 'package:taskati/core/widgets/tab_button.dart';
 import 'package:taskati/features/home/screens/home_screen.dart';
+import 'package:taskati/core/helpers/error_snackbar.dart';
 
 class CompleteProfileScreen extends StatefulWidget {
   const CompleteProfileScreen({super.key});
@@ -44,73 +44,9 @@ class _CompleteProfileScreenState extends State<CompleteProfileScreen> {
                 ],
               ),
               Gap(20),
-              Stack(
-                children: [
-                  ClipOval(
-                    child: path != null
-                        ? Image.file(
-                            File(path!),
-                            height: 170,
-                            width: 170,
-                            fit: BoxFit.cover,
-                          )
-                        : Image.asset(
-                            AppImages.user,
-                            height: 170,
-                            width: 170,
-                            fit: BoxFit.cover,
-                          ),
-                  ),
-                  if (path != null)
-                    Positioned(
-                      right: 5,
-                      bottom: 5,
-                      child: GestureDetector(
-                        onTap: () {
-                          // show Dialog for deleting
-                          showDialog(
-                            context: context,
-                            builder: (context) => AlertDialog(
-                              title: const Text('Delete Image'),
-                              backgroundColor: Colors.white,
-                              content: const Text(
-                                'Are you sure you want to delete this image?',
-                              ),
-                              actions: [
-                                TextButton(
-                                  child: const Text('Yes'),
-                                  onPressed: () {
-                                    setState(() {
-                                      path = null;
-                                    });
-                                    Navigator.pop(context);
-                                  },
-                                ),
-                                SimpleDialogOption(
-                                  child: const Text('No'),
-                                  onPressed: () {
-                                    Navigator.pop(context);
-                                  },
-                                ),
-                              ],
-                            ),
-                          );
-                        },
 
-                        // onTap: () {
-                        //   setState(() {
-                        //     path = null;
-                        //   });
-                        // },
-                        child: CircleAvatar(
-                          radius: 20,
-                          backgroundColor: AppColors.backgroundColor,
-                          child: CustomSvgPicture(path: AppImages.deleteSvg),
-                        ),
-                      ),
-                    ),
-                ],
-              ),
+              _profileImage(),
+
               Gap(30),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -176,47 +112,89 @@ class _CompleteProfileScreenState extends State<CompleteProfileScreen> {
               pushReplacement(context, HomeScreen());
             } else if (path == null && controller.text.isNotEmpty) {
               // showErrorDialog(context, 'select profile image');
-              ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(
-                  content: Text('Please select a profile image.'),
-
-                  backgroundColor: AppColors.redColor,
-                  behavior: SnackBarBehavior.floating,
-
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                ),
-              );
+              showErrorSnackBar(context, 'Please select a profile image.');
             } else if (path != null && controller.text.isEmpty) {
               // showErrorDialog(context, 'enter your name');
-              ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(
-                  content: Text('Please enter your name.'),
-                  backgroundColor: AppColors.redColor,
-                  behavior: SnackBarBehavior.floating,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                ),
-              );
+              showErrorSnackBar(context, 'Please enter your name.');
             } else {
-              ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(
-                  content: Text(
-                    'Please select a profile image and enter your name.',
-                  ),
-                  backgroundColor: AppColors.redColor,
-                  behavior: SnackBarBehavior.floating,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                ),
+              showErrorSnackBar(
+                context,
+                'Please select a profile image and enter your name.',
               );
             }
           },
         ),
       ),
+    );
+  }
+
+  Widget _profileImage() {
+    return Stack(
+      children: [
+        ClipOval(
+          child: path != null
+              ? Image.file(
+                  File(path!),
+                  height: 170,
+                  width: 170,
+                  fit: BoxFit.cover,
+                )
+              : Image.asset(
+                  AppImages.user,
+                  height: 170,
+                  width: 170,
+                  fit: BoxFit.cover,
+                ),
+        ),
+        if (path != null)
+          Positioned(
+            right: 5,
+            bottom: 5,
+            child: GestureDetector(
+              onTap: () {
+                // show Dialog for deleting
+                showDialog(
+                  context: context,
+                  builder: (context) => AlertDialog(
+                    title: const Text('Delete Image'),
+                    backgroundColor: Colors.white,
+                    content: const Text(
+                      'Are you sure you want to delete this image?',
+                    ),
+                    actions: [
+                      TextButton(
+                        child: const Text('Yes'),
+                        onPressed: () {
+                          setState(() {
+                            path = null;
+                          });
+                          Navigator.pop(context);
+                        },
+                      ),
+                      SimpleDialogOption(
+                        child: const Text('No'),
+                        onPressed: () {
+                          Navigator.pop(context);
+                        },
+                      ),
+                    ],
+                  ),
+                );
+              },
+
+              // onTap: () {
+              //   setState(() {
+              //     path = null;
+              //   });
+              // },
+              child: CircleAvatar(
+                radius: 20,
+                backgroundColor: AppColors.backgroundColor,
+                child: CustomSvgPicture(path: AppImages.deleteSvg),
+              ),
+            ),
+          ),
+      ],
     );
   }
 }
