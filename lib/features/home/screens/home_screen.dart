@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:gap/gap.dart';
+
+import 'package:taskati/features/home/widgets/daily_progress.dart';
 
 import 'package:taskati/features/home/widgets/home_header.dart';
 
@@ -11,7 +14,7 @@ class HomeScreen extends StatelessWidget {
       child: Scaffold(
         body: Padding(
           padding: const EdgeInsets.all(20),
-          child: Column(children: [HomeHeader()]),
+          child: Column(children: [HomeHeader(), Gap(24), DailyProgress()]),
         ),
       ),
     );
