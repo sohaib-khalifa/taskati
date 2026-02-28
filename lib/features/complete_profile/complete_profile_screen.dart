@@ -4,6 +4,7 @@ import 'package:gap/gap.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:taskati/core/constants/app_images.dart';
 import 'package:taskati/core/functions/navigations.dart';
+import 'package:taskati/core/services/shared_pref.dart';
 import 'package:taskati/core/styles/colors.dart';
 import 'package:taskati/core/styles/text_styles.dart';
 import 'package:taskati/core/widgets/custom_svg_picture.dart';
@@ -106,8 +107,10 @@ class _CompleteProfileScreenState extends State<CompleteProfileScreen> {
         padding: const EdgeInsets.fromLTRB(22, 5, 22, 30),
         child: MainButton(
           text: 'Let\'s Start!',
-          onPressed: () {
+          onPressed: () async {
             if (path != null && controller.text.isNotEmpty) {
+              await SharedPref.setUserInfo(controller.text, path!);
+              await SharedPref.setBool(SharedPref.isUploadedKey, true);
               // navigate to next screen
               pushReplacement(context, HomeScreen());
             } else if (path == null && controller.text.isNotEmpty) {
