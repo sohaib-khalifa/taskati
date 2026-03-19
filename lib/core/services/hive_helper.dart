@@ -15,6 +15,7 @@ abstract class HiveHelper {
   static String nameKey = 'name';
   static String imageKey = 'image';
   static String isUploadedKey = 'isUploaded';
+    static String isDarkModeKey = 'isDarkMode';
 
   static Future<void> init() async {
     await Hive.initFlutter();

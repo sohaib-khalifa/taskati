@@ -2,6 +2,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:taskati/core/constants/app_images.dart';
+import 'package:taskati/core/functions/extensions.dart';
 import 'package:taskati/core/services/hive_helper.dart';
 // import 'package:taskati/core/services/shared_pref.dart';
 import 'package:taskati/core/styles/text_styles.dart';
@@ -51,12 +52,22 @@ class _HomeHeaderState extends State<HomeHeader> {
                 ),
         ),
         Gap(12),
-        Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text('Hello!', style: TextStyles.caption1),
-            Text(name, style: TextStyles.title),
-          ],
+        Expanded(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text('Hello!', style: TextStyles.caption1),
+              Text(name, style: TextStyles.title),
+            ],
+          ),
+        ),
+        IconButton(
+          onPressed: () {
+            bool isDarkMode = context.isDarkMode;
+            HiveHelper.cacheData(HiveHelper.isDarkModeKey, !isDarkMode);
+            setState(() {});
+          },
+          icon: Icon(context.isDarkMode ? Icons.light_mode : Icons.dark_mode),
         ),
       ],
     );

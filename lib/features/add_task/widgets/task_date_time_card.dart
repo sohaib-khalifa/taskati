@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:taskati/core/constants/app_images.dart';
+import 'package:taskati/core/functions/extensions.dart';
 import 'package:taskati/core/styles/colors.dart';
 import 'package:taskati/core/styles/text_styles.dart';
 import 'package:taskati/core/widgets/custom_svg_picture.dart';
@@ -28,7 +29,9 @@ class TaskDateTimeCard extends StatelessWidget {
         child: Container(
           padding: const EdgeInsets.all(16),
           decoration: BoxDecoration(
-            color: AppColors.backgroundColor,
+            // color: AppColors.backgroundColor,
+            color: context.cardColor,
+
             // color:
             borderRadius: BorderRadius.circular(15),
             boxShadow: [
@@ -50,7 +53,10 @@ class TaskDateTimeCard extends StatelessWidget {
                     Text(
                       title,
                       style: TextStyles.caption2.copyWith(
-                        color: AppColors.secondaryColor,
+                        // color: AppColors.secondaryColor,
+                        color: context.isDarkMode
+                            ? Colors.white
+                            : AppColors.secondaryColor,
                       ),
                     ),
                     const SizedBox(height: 2),
@@ -68,6 +74,7 @@ class TaskDateTimeCard extends StatelessWidget {
                 // color:
                 height: 24,
                 width: 24,
+                color: context.theme.iconTheme.color,
               ),
             ],
           ),

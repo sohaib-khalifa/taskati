@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:intl/intl.dart';
 import 'package:taskati/core/constants/app_images.dart';
+import 'package:taskati/core/functions/extensions.dart';
 import 'package:taskati/core/functions/navigations.dart';
 import 'package:taskati/core/models/task_model.dart';
 import 'package:taskati/core/services/hive_helper.dart';
@@ -65,11 +66,12 @@ class _AddEditTaskScreenState extends State<AddEditTaskScreen> {
             path: AppImages.backSvg,
             width: 24,
             height: 24,
+            color: context.theme.iconTheme.color,
             // color: context.theme.iconTheme.color,
           ),
         ),
         // title: Text('Add Task'),
-          title: Text(widget.task != null ? 'Edit Task' : 'Add Task'),
+        title: Text(widget.task != null ? 'Edit Task' : 'Add Task'),
       ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(20),
@@ -79,7 +81,10 @@ class _AddEditTaskScreenState extends State<AddEditTaskScreen> {
             Text(
               'Title',
               style: TextStyles.caption1.copyWith(
-                color: AppColors.secondaryColor,
+                // color: AppColors.secondaryColor,
+                color: context.isDarkMode
+                    ? Colors.white
+                    : AppColors.secondaryColor,
               ),
             ),
             const Gap(8),
@@ -92,7 +97,10 @@ class _AddEditTaskScreenState extends State<AddEditTaskScreen> {
             Text(
               'Description',
               style: TextStyles.caption1.copyWith(
-                color: AppColors.secondaryColor,
+                // color: AppColors.secondaryColor,
+                color: context.isDarkMode
+                    ? Colors.white
+                    : AppColors.secondaryColor,
               ),
             ),
             const Gap(8),
@@ -142,7 +150,7 @@ class _AddEditTaskScreenState extends State<AddEditTaskScreen> {
         padding: const EdgeInsets.fromLTRB(22, 8, 22, 30),
         child: MainButton(
           // text: 'Add Task',
-                    text: widget.task != null ? 'Save' : 'Add Task',
+          text: widget.task != null ? 'Save' : 'Add Task',
 
           // onPressed: () {
           //   String id = DateTime.now().microsecondsSinceEpoch.toString();
@@ -161,7 +169,7 @@ class _AddEditTaskScreenState extends State<AddEditTaskScreen> {
           //   // popFrom(context);
           //   pushReplacement(context, HomeScreen());
           // },
-                    onPressed: () {
+          onPressed: () {
             if (widget.task != null) {
               HiveHelper.cacheTask(
                 widget.task!.id,

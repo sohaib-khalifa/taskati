@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:hive_ce_flutter/hive_flutter.dart';
 import 'package:intl/intl.dart';
+import 'package:taskati/core/functions/extensions.dart';
 import 'package:taskati/core/functions/navigations.dart';
 import 'package:taskati/core/models/task_model.dart';
 import 'package:taskati/core/services/hive_helper.dart';
@@ -34,8 +35,8 @@ class _HomeScreenState extends State<HomeScreen> {
     return SafeArea(
       child: Scaffold(
         floatingActionButton: FloatingActionButton(
-          backgroundColor: AppColors.primaryColor,
-          foregroundColor: AppColors.backgroundColor,
+          // backgroundColor: AppColors.primaryColor,
+          // foregroundColor: AppColors.backgroundColor,
           onPressed: () {
             pushTo(context, AddEditTaskScreen());
           },
@@ -82,10 +83,17 @@ class _HomeScreenState extends State<HomeScreen> {
         fontWeight: FontWeight.bold,
       ),
       unselectedLabelStyle: TextStyles.caption1.copyWith(
-        color: AppColors.primaryColor,
-        // fontWeight: FontWeight.bold,
+        color: context.isDarkMode
+            ? AppColors.backgroundColor
+            : AppColors.primaryColor,
       ),
-      unselectedBackgroundColor: AppColors.accentColor,
+      // unselectedLabelStyle: TextStyles.caption1.copyWith(
+      //   color: AppColors.primaryColor,
+      //   // fontWeight: FontWeight.bold,
+      // ),
+
+      // unselectedBackgroundColor: AppColors.accentColor,
+      unselectedBackgroundColor: context.hoverColor,
       radius: 12,
       buttonMargin: EdgeInsets.symmetric(horizontal: 6, vertical: 3),
       contentCenter: true,
