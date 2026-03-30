@@ -132,6 +132,11 @@ class CustomTextFormField extends StatelessWidget {
           hintText: hintText,
           hintStyle: hintStyle,
           contentPadding: contentPadding,
+          errorStyle: TextStyle(
+            color: Colors.red,
+            fontSize: 14,
+            fontWeight: FontWeight.w500,
+          ),
         ),
         validator: validator,
         onTap: onTap,

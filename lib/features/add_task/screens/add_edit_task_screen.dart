@@ -16,13 +16,14 @@ import 'package:taskati/features/add_task/widgets/task_date_time_card.dart';
 class AddEditTaskScreen extends StatefulWidget {
   const AddEditTaskScreen({super.key, this.task, this.selectedDate});
   final TaskModel? task;
-    final String? selectedDate;
+  final String? selectedDate;
 
   @override
   State<AddEditTaskScreen> createState() => _AddEditTaskScreenState();
 }
 
 class _AddEditTaskScreenState extends State<AddEditTaskScreen> {
+  final _formKey = GlobalKey<FormState>();
   late final TextEditingController _titleController;
   late final TextEditingController _descriptionController;
 
@@ -44,9 +45,10 @@ class _AddEditTaskScreenState extends State<AddEditTaskScreen> {
     );
     // _date =
     //     widget.task?.date ?? DateFormat('dd MMM, yyyy').format(DateTime.now());
-    _date = widget.task?.date 
-    ?? widget.selectedDate 
-    ?? DateFormat('dd MMM, yyyy').format(DateTime.now());
+    _date =
+        widget.task?.date ??
+        widget.selectedDate ??
+        DateFormat('dd MMM, yyyy').format(DateTime.now());
     _startTime =
         widget.task?.startTime ?? DateFormat('hh:mm a').format(DateTime.now());
     _endTime =
@@ -80,75 +82,89 @@ class _AddEditTaskScreenState extends State<AddEditTaskScreen> {
       ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(20),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              'Title',
-              style: TextStyles.caption1.copyWith(
-                // color: AppColors.secondaryColor,
-                color: context.isDarkMode
-                    ? Colors.white
-                    : AppColors.secondaryColor,
+        child: Form(
+          key: _formKey,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                'Title',
+                style: TextStyles.caption1.copyWith(
+                  // color: AppColors.secondaryColor,
+                  color: context.isDarkMode
+                      ? Colors.white
+                      : AppColors.secondaryColor,
+                ),
               ),
-            ),
-            const Gap(8),
-            CustomTextFormField(
-              controller: _titleController,
+              const Gap(8),
+              CustomTextFormField(
+                controller: _titleController,
 
-              contentPadding: const EdgeInsets.all(16),
-            ),
-            const Gap(18),
-            Text(
-              'Description',
-              style: TextStyles.caption1.copyWith(
-                // color: AppColors.secondaryColor,
-                color: context.isDarkMode
-                    ? Colors.white
-                    : AppColors.secondaryColor,
+                contentPadding: const EdgeInsets.all(16),
+                validator: (value) {
+                  if (value == null || value.trim().isEmpty) {
+                    return 'Title is required';
+                  }
+                  return null;
+                },
+                onChanged: (val) {
+                  if (_formKey.currentState != null) {
+                    _formKey.currentState!.validate();
+                  }
+                },
               ),
-            ),
-            const Gap(8),
-            CustomTextFormField(
-              controller: _descriptionController,
-              maxLines: 4,
-              minLines: 4,
-              contentPadding: const EdgeInsets.all(16),
-            ),
-            const Gap(30),
-            TaskDateTimeCard(
-              title: 'Date',
-              value: _date,
-              iconPath: AppImages.calendar,
-              onTap: () async {
-                var selectedDate = await showDatePicker(
-                  context: context,
-                  firstDate: DateTime.now(),
-                  initialDate: DateTime.now(),
-                  lastDate: DateTime(2030),
-                );
-                if (selectedDate != null) {
-                  setState(() {
-                    _date = DateFormat('dd MMM, yyyy').format(selectedDate);
-                  });
-                }
-              },
-            ),
-            const Gap(24),
-            TaskDateTimeCard(
-              title: 'Start Time',
-              value: _startTime,
-              iconPath: AppImages.timeSvg,
-              onTap: () => _selectTime(true),
-            ),
-            const Gap(24),
-            TaskDateTimeCard(
-              title: 'End Time',
-              value: _endTime,
-              iconPath: AppImages.timeSvg,
-              onTap: () => _selectTime(false),
-            ),
-          ],
+              const Gap(18),
+              Text(
+                'Description',
+                style: TextStyles.caption1.copyWith(
+                  // color: AppColors.secondaryColor,
+                  color: context.isDarkMode
+                      ? Colors.white
+                      : AppColors.secondaryColor,
+                ),
+              ),
+              const Gap(8),
+              CustomTextFormField(
+                controller: _descriptionController,
+                maxLines: 4,
+                minLines: 4,
+                contentPadding: const EdgeInsets.all(16),
+              ),
+              const Gap(30),
+              TaskDateTimeCard(
+                title: 'Date',
+                value: _date,
+                iconPath: AppImages.calendar,
+                onTap: () async {
+                  var selectedDate = await showDatePicker(
+                    context: context,
+                    firstDate: DateTime.now(),
+                    initialDate: DateTime.now(),
+                    lastDate: DateTime(2030),
+                  );
+                  if (selectedDate != null) {
+                    setState(() {
+                      _date = DateFormat('dd MMM, yyyy').format(selectedDate);
+                    });
+                  }
+                },
+              ),
+              const Gap(24),
+              TaskDateTimeCard(
+                title: 'Start Time',
+                value: _startTime,
+                iconPath: AppImages.timeSvg,
+                onTap: () => _selectTime(true),
+              ),
+              const Gap(24),
+              TaskDateTimeCard(
+                title: 'End Time',
+                value: _endTime,
+                iconPath: AppImages.timeSvg,
+                onTap: () => _selectTime(false),
+              ),
+            ],
+          ),
         ),
       ),
       bottomNavigationBar: Padding(
@@ -175,6 +191,7 @@ class _AddEditTaskScreenState extends State<AddEditTaskScreen> {
           //   pushReplacement(context, HomeScreen());
           // },
           onPressed: () {
+            if (!_formKey.currentState!.validate()) return;
             if (widget.task != null) {
               HiveHelper.cacheTask(
                 widget.task!.id,
