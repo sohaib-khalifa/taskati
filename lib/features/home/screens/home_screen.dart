@@ -38,7 +38,7 @@ class _HomeScreenState extends State<HomeScreen> {
           // backgroundColor: AppColors.primaryColor,
           // foregroundColor: AppColors.backgroundColor,
           onPressed: () {
-            pushTo(context, AddEditTaskScreen());
+            pushTo(context, AddEditTaskScreen(selectedDate: selectedDate,));
           },
           child: const Icon(Icons.add),
         ),

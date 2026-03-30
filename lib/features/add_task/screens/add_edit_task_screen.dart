@@ -14,8 +14,10 @@ import 'package:taskati/core/widgets/main_button.dart';
 import 'package:taskati/features/add_task/widgets/task_date_time_card.dart';
 
 class AddEditTaskScreen extends StatefulWidget {
-  const AddEditTaskScreen({super.key, this.task});
+  const AddEditTaskScreen({super.key, this.task, this.selectedDate});
   final TaskModel? task;
+    final String? selectedDate;
+
   @override
   State<AddEditTaskScreen> createState() => _AddEditTaskScreenState();
 }
@@ -40,8 +42,11 @@ class _AddEditTaskScreenState extends State<AddEditTaskScreen> {
     _descriptionController = TextEditingController(
       text: widget.task?.description ?? '',
     );
-    _date =
-        widget.task?.date ?? DateFormat('dd MMM, yyyy').format(DateTime.now());
+    // _date =
+    //     widget.task?.date ?? DateFormat('dd MMM, yyyy').format(DateTime.now());
+    _date = widget.task?.date 
+    ?? widget.selectedDate 
+    ?? DateFormat('dd MMM, yyyy').format(DateTime.now());
     _startTime =
         widget.task?.startTime ?? DateFormat('hh:mm a').format(DateTime.now());
     _endTime =
