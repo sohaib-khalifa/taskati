@@ -9,7 +9,8 @@ import 'package:taskati/core/styles/colors.dart';
 import 'package:taskati/core/styles/text_styles.dart';
 
 class DailyProgress extends StatelessWidget {
-  const DailyProgress({super.key});
+  const DailyProgress({super.key, required this.selectedDate});
+  final String selectedDate;
 
   @override
   Widget build(BuildContext context) {
@@ -18,7 +19,8 @@ class DailyProgress extends StatelessWidget {
       builder: (context, box, child) {
         List<TaskModel> dailyTasks = [];
         for (var task in box.values) {
-          if (task.date == DateFormat('dd MMM, yyyy').format(DateTime.now())) {
+          // if (task.date == DateFormat('dd MMM, yyyy').format(DateTime.now()))
+          if (task.date == selectedDate) {
             dailyTasks.add(task);
           }
         }
@@ -44,7 +46,10 @@ class DailyProgress extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      DateFormat("EEE, dd MMM").format(DateTime.now()),
+                      // DateFormat("EEE, dd MMM").format(DateTime.now()),
+                      DateFormat(
+                        "EEE, dd MMM",
+                      ).format(DateFormat('dd MMM, yyyy').parse(selectedDate)),
                       style: TextStyles.caption1.copyWith(
                         fontWeight: FontWeight.w600,
                         color: AppColors.backgroundColor,

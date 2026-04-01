@@ -50,7 +50,8 @@ class _HomeScreenState extends State<HomeScreen> {
               children: [
                 HomeHeader(),
                 Gap(24),
-                DailyProgress(),
+                // DailyProgress(),
+                DailyProgress(selectedDate: selectedDate),
                 Gap(24),
                 HomeDatePicker(
                   onDateChange: (date) {
